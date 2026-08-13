@@ -1,26 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button} from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, TextInput, View, Button, Image} from 'react-native';
 
 
 export default function App() {
+  const [Name,setName] = useState('');
+  const [Surname,setSurname] = useState('');
+
+  console.log("App starting up");
   return (
-    <View >
+    <View>
       <View style ={styles.mainPicture}>
-        <Image style = {styles.ImageSize}
-        source={require('C:\\VisualCodeProject\\Mast\\ProjectVS\\images\\react-Native.png')}/>
+        <Image 
+        style = {styles.imageSize}
+        source={require('ProjectVS\\project\\assets\\react-Native.png')}/>
       </View>
       <Text style={styles.welcomeText}>Welcome your React App!</Text>
 
 <View style= {styles.InputFlex}>
 
-      <Text style={styles.Headingtext}>Enter Name</Text>
-      <TextInput style={styles.InputBox} placeholder="Enter First Name" />
+      <Text style={styles.headingtext}>Enter Name</Text>
+      <TextInput style={styles.inputBox} placeholder="Enter First Name" 
+      onChangeText = {newText => setName(newText)}/>
 
 </View>
 
-      <Text style={styles.Headingtext}>Enter Surname</Text>
-      <TextInput style={styles.InputBox} placeholder="Enter Surname" />
-      <Button title = "Add User"/>
+      <Text style={styles.headingtext}>Enter Surname</Text>
+      <TextInput style={styles.inputBox} placeholder="Enter Surname" 
+      onChangeText = {newText => setSurname(newText)}/>
+      <Button title = "Add User"
+      onPress={() => {
+        console.log("Name:" + Name + 
+          "Surname:" + Surname);
+      }}/>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -34,14 +47,14 @@ const styles = StyleSheet.create({
     fontSize: 28,
     textAlign: 'center',
   },
-  InputBox: {
+  inputBox: {
     borderWidth: 1,
     borderColor: 'gray',
     padding: 10,
     marginBottom: 20,
     width: '100%',
   },
-  Headingtext: {
+  headingtext: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -51,7 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  ImageSize: {
+  imageSize: {
     width: 350,
     height: 350,
   },
