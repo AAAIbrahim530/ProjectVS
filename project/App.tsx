@@ -21,13 +21,19 @@ export default function App() {
 
       <Text style={styles.headingtext}>Enter Name</Text>
       <TextInput style={styles.inputBox} placeholder="Enter First Name" 
-      onChangeText = {newText => setName(newText)}/>
+      onChangeText = {newText => setName(newText.replace(/[^a-zA-Z\s]/g, ''))}
+      autoCapitalize="words"
+      autoComplete="name"
+      keyboardType="default"/>
 
 </View>
 
       <Text style={styles.headingtext}>Enter Surname</Text>
       <TextInput style={styles.inputBox} placeholder="Enter Surname" 
-      onChangeText = {newText => setSurname(newText)}/>
+      onChangeText = {newText => setSurname(newText.replace(/[^a-zA-Z\s]/g, ''))}
+      autoCapitalize="words"
+      autoComplete="name-family"
+      keyboardType="default"/>
       <Button title = "Add User"
       onPress={() => {
         console.log("Name:" + Name + 
