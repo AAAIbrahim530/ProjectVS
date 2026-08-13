@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Button, Image} from 'react-native';
-
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 export default function App() {
   const [Name,setName] = useState('');
@@ -9,11 +10,13 @@ export default function App() {
 
   console.log("App starting up");
   return (
+    
+    <NavigationContainer>
     <View>
       <View style ={styles.mainPicture}>
         <Image 
         style = {styles.imageSize}
-        source={require('ProjectVS\\project\\assets\\react-Native.png')}/>
+        source={require('./assets/react-Native.png')}/>
       </View>
       <Text style={styles.welcomeText}>Welcome your React App!</Text>
 
@@ -34,14 +37,17 @@ export default function App() {
       autoCapitalize="words"
       autoComplete="name-family"
       keyboardType="default"/>
+     
       <Button title = "Add User"
       onPress={() => {
         console.log("Name:" + Name + 
           "Surname:" + Surname);
+
       }}/>
 
       <StatusBar style="auto" />
     </View>
+    </NavigationContainer>
   );
 }
 
