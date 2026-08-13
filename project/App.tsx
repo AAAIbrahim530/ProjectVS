@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, Button, Image} from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, Image, ScrollView, SafeAreaViewBase} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type RootStackParamList = {
   Home: undefined;
@@ -39,7 +40,8 @@ function MainScreen({ navigation }:
     
     
     <View>
-
+      <SafeAreaView>
+        <ScrollView>
       <View style ={styles.mainPicture}>
 
         <Image 
@@ -78,6 +80,9 @@ function MainScreen({ navigation }:
         console.log("Name:" + Name + 
           "Surname:" + Surname);
          }}/>
+         </ScrollView>
+         </SafeAreaView>
+         
     </View>
   );
 };
