@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, Button, Image, ScrollView, SafeAreaViewBase} from 'react-native';
+import { useEffect, useState, useRef, ReactNode} from 'react';
+import { StyleSheet, Text, TextInput, View, Button, Image, ScrollView, SafeAreaViewBase, Animated, ViewStyle, StyleProp} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -34,6 +34,7 @@ function MainScreen({ navigation }:
 {
   const [Name, setName] = useState('');
   const [Surname, setSurname] = useState('');
+  const [Error,setError] = useState(false);
 
   console.log("App starting up");
   return (
@@ -51,6 +52,12 @@ function MainScreen({ navigation }:
       </View>
 
       <Text style={styles.welcomeText}>Welcome your React App!</Text>
+
+      <FadeView>
+        <Text style={Error? styles.red :
+  styles.blank}>
+          {Error? "Please add all the fields" : ""}
+        </Text>
 
 <View style= {styles.InputFlex}>
 
@@ -76,15 +83,39 @@ function MainScreen({ navigation }:
 
   <Button title = "Add User"
       onPress={() => {
+
+        if ((isEmpty(Name)==false) && (isEmpty(Surname)==false))
+{
         navigation.navigate('ViewDetails' , { NameSend : Name, SurnameSend : Surname });
         console.log("Name:" + Name + 
           "Surname:" + Surname);
+          setError(false);
+}
+else
+{
+  setError(true);
+}
+
          }}/>
+         </FadeView>
          </ScrollView>
          </SafeAreaView>
          
     </View>
   );
+};
+
+function isEmpty(value: string) {
+  return(
+    // null or undefined
+    (value == null) || 
+
+    // has length and it's zero
+    (value.hasOwnProperty('length') && value.length === 0) || 
+
+    // is an Object and has no keys
+    (value.constructor === Object && Object.keys(value).length === 0)
+  )
 };
 
 function ViewDetails({ navigation ,route }: 
@@ -133,4 +164,43 @@ const styles = StyleSheet.create({
     marginTop: 30,
     justifyContent: 'space-evenly',
   },
-  });
+  red: {
+    color: 'red',
+    fontWeight: 'bold',
+    fontSize: 26,
+    textAlign: 'center'
+  },
+  blank: {
+    fontSize: 0,
+  }
+});
+
+interface FadeViewProps {
+  children: ReactNode;
+  style?: StyleProp<ViewStyle>;
+}
+  const FadeView = ({ children, style }: FadeViewProps) => {
+    const fadeAnim = useRef(new Animated.Value(0)).current
+
+    useEffect(() => {
+      Animated.timing(
+        fadeAnim,
+        {
+          toValue: 1,
+          duration:3000,
+          useNativeDriver: false
+        }
+      ).start();
+    },[fadeAnim])
+
+    return (
+      <Animated.View
+        style={{
+          ...(style as object),
+          opacity: fadeAnim,
+        }}
+      >
+        {children}
+      </Animated.View>
+    );
+  }
